@@ -67,13 +67,16 @@ query_for_question_three = view_status_error + view_status_all + """
 
 
 def send_query(query):
-    db = psycopg2.connect(database=DB_NAME)
-    c = db.cursor()
-    c.execute(query)
-    results = c.fetchall()
-    db.close()
-    return results
-
+    try:
+        db = psycopg2.connect(database=DB_NAME)
+        c = db.cursor()
+        c.execute(query)
+        results = c.fetchall()
+        db.close()
+        return results
+    except psycopg2.Error as e:
+        print "Unable to connect to database"
+        sys.exit(1)
 
 def print_results_query_one(results):
     print "The most popular three articles of all time"
@@ -94,7 +97,7 @@ def print_results_query_three(results):
     for i in results:
         print str(i[0]) + ' - ' + str(i[1]) + " % errors"
 
-
-print_results_query_one(send_query(query_for_question_one))
-print_results_query_two(send_query(query_for_question_two))
-print_results_query_three(send_query(query_for_question_three))
+if __name__ == '__main__':
+    print_results_query_one(send_query(query_for_question_one))
+    print_results_query_two(send_query(query_for_question_two))
+    print_results_query_three(send_query(query_for_question_three))
