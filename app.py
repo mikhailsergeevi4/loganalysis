@@ -1,4 +1,4 @@
-# Python 2.7.3 (default, Oct 26 2016, 21:04:23)
+#!/usr/bin/env python
 
 import psycopg2
 
@@ -30,7 +30,7 @@ view_status_error = """
                     order by day;
                     """
 
-# Al statuses
+# All statuses
 view_status_all = """
                  create view status_all as
                  select date(time) as day,
